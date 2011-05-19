@@ -25,7 +25,9 @@ var cleanStr = function(html) {
 
 
 var doSearch = function() {
-    var searchTerm = $('#term')[0].value;
+    $('#chartInner').hide();
+    $('#loader').show();
+    var searchTerm = $('#term').first().value;
     $.getJSON("http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?", function(json) {
         var countMap = _(json.results)
             .chain()
@@ -52,6 +54,8 @@ var draw = function(array) {
     data.addRows(array);
 
     // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.PieChart(document.getElementById('chart'));
+    $('#loader').hide();
+    $('#chartInner').show();
+    var chart = new google.visualization.PieChart($('#chartInner')[0]);
     chart.draw(data, {width: 800, height: 450});
 };
