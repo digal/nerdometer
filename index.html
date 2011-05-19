@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Nerd-o-meter</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" href="styles/style.css" />
         <script type="text/javascript" src="scripts/underscore.js"></script>
         <script type="text/javascript" src="scripts/zepto.js"></script>
@@ -9,11 +10,26 @@
     </head>
     <body>
         <div id="container">
+            <h3>Nerd-o-meter<sup>&nbsp;alpha</sup></h3>
             <div id="chart">
             </div>
 
-            <input id="term" name="term"></input>
-            <button onClick="doSearch();">YARR!</button>
+            <p>Twitter search query: <input id="term" name="term"></input>
+            <button onClick="doSearch();">YARR!</button></p>
+        </div>
+        <div id="footer">
+            <div id="left">
+                Nerd-o-meters shows client statistics for specified search query.<br/>
+                Ingridients:
+                <li><a href="http://search.twitter.com/api/">Twitter search API</a> for data</li>
+                <li><a href="http://zeptojs.com/">zepto.js</a> for handy stuff</li>
+                <li><a href="http://documentcloud.github.com/underscore/">underscore.js</a> for functional programming stuff</li>
+                <li><a href="http://code.google.com/apis/chart/">Google chart Tools</a> for neat piechart</li>
+            </div>
+            <div id="right">
+                By <a href="http://twitter.com/digal">@digal</a><br/>
+                2011
+            </div>
         </div>
     </body>
 </html>

@@ -5,7 +5,25 @@
 #chart {
     margin-left: auto ;
     margin-right: auto ;
-    width: 640px;
-    height: 480px;
+    width: 800px;
+    height: 450px;
     border: 1px solid black;
+}
+
+#footer {
+    margin-left: auto ;
+    margin-right: auto ;
+    width: 800px;
+}
+
+#footer div {
+    width: auto;
+}
+
+#footer #left {
+    float: left;
+}
+
+#footer #right {
+    float: right;
 }
