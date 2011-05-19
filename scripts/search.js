@@ -32,6 +32,8 @@ var doSearch = function() {
     $.getJSON(searchURL, function(json) {
         $('#btnSearch')[0].removeAttribute('disabled');
 
+        var title = "Client stats for \""+searchTerm+"\"";
+
         var countMap = _(json.results)
             .chain()
             .map(resMap)
@@ -45,11 +47,11 @@ var doSearch = function() {
             .toArray()
             .value();
 
-        draw(array);
+        draw(array, title);
     });
 };
 
-var draw = function(array) {
+var draw = function(array, title) {
     // Create our data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Client');
@@ -60,5 +62,5 @@ var draw = function(array) {
     $('#loader').hide();
     $('#chartInner').show();
     var chart = new google.visualization.PieChart($('#chartInner')[0]);
-    chart.draw(data, {width: 800, height: 450});
+    chart.draw(data, {width: 800, height: 450, title: title, is3D: true});
 };
