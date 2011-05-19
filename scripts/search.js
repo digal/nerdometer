@@ -26,7 +26,7 @@ var cleanStr = function(html) {
 
 var doSearch = function() {
     var searchTerm = $('#term')[0].value;
-    $.getJSON("http://search.twitter.com/search.json?q="+encodeURI(searchTerm)+"&rpp=100&callback=?", function(json) {
+    $.getJSON("http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?", function(json) {
         var countMap = _(json.results)
             .chain()
             .map(resMap)
