@@ -53,5 +53,5 @@ var draw = function(array) {
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.PieChart(document.getElementById('chart'));
-    chart.draw(data, {width: 640, height: 480});
+    chart.draw(data, {width: 800, height: 450});
 };
