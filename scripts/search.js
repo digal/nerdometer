@@ -5,6 +5,7 @@ var resMap = function(item) {
     return item.source;
 };
 
+//reduce to map of counts
 var resReduce = function(counts, source) {
     counts[source] = (counts[source] || 0) + 1;
     return counts;
@@ -22,13 +23,15 @@ var cleanStr = function(html) {
     return unescapeHTML(html).replace(/<.*?>/, "").replace(/<.*?>/, "");
 };
 
-
-
 var doSearch = function() {
+    $('#btnSearch').attr('disabled', 'disabled');
     $('#chartInner').hide();
     $('#loader').show();
-    var searchTerm = $('#term').first().value;
-    $.getJSON("http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?", function(json) {
+    var searchTerm = $('#term')[0].value;
+    var searchURL = "http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?";
+    $.getJSON(searchURL, function(json) {
+        $('#btnSearch')[0].removeAttribute('disabled');
+
         var countMap = _(json.results)
             .chain()
             .map(resMap)
