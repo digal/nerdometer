@@ -29,11 +29,23 @@ var cleanStr = function(html) {
     return unescapeHTML(html).replace(/<.*?>/, "").replace(/<.*?>/, "");
 };
 
-var doSearch = function() {
+var onSearch = function() {
+    var searchTerm = $('#term')[0].value.trim();
+    if (!searchTerm) {
+        return;
+    }
+    if (history && 'pushState' in history) {
+        history.pushState(searchTerm, '', ['#!/search/', searchTerm].join(''));
+    }
+    doSearch(searchTerm);
+};
+
+var doSearch = function(searchTerm) {
+    $('#term').attr('value', searchTerm);
     $('#btnSearch').attr('disabled', 'disabled');
     $('#chartInner').hide();
     $('#loader').show();
-    var searchTerm = $('#term')[0].value;
+
     var searchURL = "http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?";
     $.getJSON(searchURL, function(json) {
         $('#btnSearch')[0].removeAttribute('disabled');
@@ -69,4 +81,26 @@ var draw = function(array, title) {
     $('#chartInner').show();
     var chart = new google.visualization.PieChart($('#chartInner')[0]);
     chart.draw(data, {width: 800, height: 450, title: title, is3D: true});
+};
+
+var clear = function() {
+    $('#loader').hide();
+    $('#chartInner').hide();
+};
+
+var bindPopstate = function() {
+    window.onpopstate = function(event) {
+        var searchTerm = event.state;
+        if (searchTerm) {
+            doSearch(searchTerm);
+        } else {
+            var hash = document.location.hash;
+            if (hash && hash.indexOf('#/search/')) {
+                searchTerm = hash.substr(10);
+                doSearch(searchTerm);
+            } else {
+                clear();
+            }
+        }
+    };
 };
