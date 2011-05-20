@@ -95,8 +95,8 @@ var bindPopstate = function() {
             doSearch(searchTerm);
         } else {
             var hash = document.location.hash;
-            if (hash && hash.indexOf('#/search/')) {
-                searchTerm = hash.substr(10);
+            if (hash && hash.indexOf('#!/search/') == 0) {
+                searchTerm = decodeURIComponent(hash.substr(10));
                 doSearch(searchTerm);
             } else {
                 clear();
