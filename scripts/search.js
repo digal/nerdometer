@@ -126,3 +126,11 @@ var setType = function(type) {
     $('#btnSearch').unbind('click');
     $('#btnSearch').bind('click', types[queryType].handler);
 };
+
+var binds = function() {
+    $('#term').bind('keyup', function(event) {
+        if (event.keyCode == 13) {
+            types[queryType].handler();
+        }
+    });
+};
