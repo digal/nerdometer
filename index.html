@@ -42,11 +42,18 @@
                 </div>
             </div>
 
-            <p>Twitter search query: <input id="term" name="term"></input>
-            <button id="btnSearch" onClick="onSearch();">YARR!</button></p>
+            <div id="controls">
+                <div class="left">
+                    Show client stats for <span id="type" onclick="swapType();">twitter search query</span>
+                </div>
+                <div class="right">
+                    <input id="term" name="term"></input>
+                    <button id="btnSearch" onClick="onSearch();">YARR!</button>
+                </div>
+            </div>
         </div>
         <div id="footer">
-            <div id="left">
+            <div class="left">
                 Nerd-o-meter shows client statistics for specified search query.<br/>
                 Ingridients:
                 <li><a href="http://search.twitter.com/api/">Twitter search API</a> for data</li>
@@ -54,7 +61,7 @@
                 <li><a href="http://documentcloud.github.com/underscore/">underscore.js</a> for functional programming stuff</li>
                 <li><a href="http://code.google.com/apis/chart/">Google chart Tools</a> for neat piecharts</li>
             </div>
-            <div id="right">
+            <div class="right">
                 By <a href="http://twitter.com/digal">@digal</a>,
                 <a href="http://twitter.com/dmedvinsky">@dmedvinsky</a><br/>
                 2011

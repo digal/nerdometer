@@ -5,6 +5,11 @@
  * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
 google.load('visualization', '1', {'packages':['corechart']});
+var type="search";
+var typeStrings = {
+    "search" : "twitter search query",
+    "user" : "user's tweets"
+}
 
 //extract source
 var resMap = function(item) {
@@ -38,6 +43,16 @@ var onSearch = function() {
         history.pushState(searchTerm, '', ['#!/search/', searchTerm].join(''));
     }
     doSearch(searchTerm);
+};
+
+var swapType = function() {
+    if (type == "search") {
+        type = "user";
+    } else {
+        type = "search";
+    }
+
+    $('#type').text(typeStrings[type]);
 };
 
 var doSearch = function(searchTerm) {

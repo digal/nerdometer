@@ -37,6 +37,38 @@
                 margin-left:-8px;
             }
 
+    #controls {
+        margin-left: auto ;
+        margin-right: auto ;
+        width: 800px;
+        text-align: left;
+        height: auto;
+    }
+
+        #controls div {
+            margin-top: 1em;
+            width: auto;
+        }
+
+
+        #controls .left {
+            float: left;
+        }
+
+        #controls .right {
+            text-align: right;
+            float: right;
+        }
+
+        #controls #type {
+            border-bottom: 1px dashed black;
+            cursor: pointer;
+        }
+
+        #controls #term {
+            width: 400px;
+        }
+
 
     #footer {
         margin-left: auto ;
@@ -45,15 +77,17 @@
     }
 
         #footer div {
+            margin-top: 1em;
             width: auto;
         }
     
-        #footer #left {
+        #footer .left {
             float: left;
         }
 
-        #footer #right {
-	    text-align: right;
+        #footer .right {
+    	    text-align: right;
             float: right;
         }
+
 
