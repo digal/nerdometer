@@ -7,42 +7,30 @@
 google.load('visualization', '1', {'packages':['corechart']});
 var queryType="search";
 
-//TODO: Merge with next function
-var onUser = function() {
-    var searchTerm = $('#term')[0].value.trim();
-    if (!searchTerm) {  
-        return;
-    }
-    if (history && 'pushState' in history) {
-        window.location.hash = ['/user/', searchTerm].join('');
-    }
+var onYarr = function(type){
+    return function() {
+        var searchTerm = $('#term')[0].value.trim();
+        if (!searchTerm) {
+            return;
+        }
+        if (history && 'pushState' in history) {
+            window.location.hash = ['/'+type+'/', searchTerm].join('');
+        }
+    };
 };
-
-var onSearch = function() {
-    var searchTerm = $('#term')[0].value.trim();
-    if (!searchTerm) {
-        return;
-    }
-    if (history && 'pushState' in history) {
-        window.location.hash = ['/search/', searchTerm].join('');
-    }
-};
-
 
 var types = {
     "search" : {
         "title" : "twitter search query",
         "icon" : "url(images/search.png) no-repeat 5px 5px",
-        "handler" : onSearch
+        "handler" : onYarr("search")
     },
     "user" : {
         "title" : "user's tweets",
         "icon" : "url(images/@.png) no-repeat 5px 5px",
-        "handler" : onUser
+        "handler" : onYarr("user")
     }
 };
-
-
 
 //extract source
 var resMap = function(item) {
@@ -75,7 +63,6 @@ var doUser = function(username) {
 };
 
 var doSearch = function(searchTerm) {
-    alert(searchTerm);
     $('#term').attr('value', searchTerm);
     $('#btnSearch').attr('disabled', 'disabled');
     $('#chartInner').hide();
