@@ -14,7 +14,7 @@ var onYarr = function(type){
             return;
         }
         if (history && 'pushState' in history) {
-            window.location.hash = ['/'+type+'/', searchTerm].join('');
+            router.setRoute(['/'+type+'/', searchTerm].join(''));
         }
     };
 };
