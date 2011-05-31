@@ -6,10 +6,18 @@
 
 google.load('visualization', '1', {'packages':['corechart']});
 var type="search";
-var typeStrings = {
-    "search" : "twitter search query",
-    "user" : "user's tweets"
-}
+var types = {
+    "search" : {
+        "title" : "twitter search query",
+        "icon" : "url(images/search.png) no-repeat 5px 5px"
+    },
+    "user" : {
+        "title" : "user's tweets",
+        "icon" : "url(images/@.png) no-repeat 5px 5px"
+    }
+};
+
+
 
 //extract source
 var resMap = function(item) {
@@ -52,7 +60,8 @@ var swapType = function() {
         type = "search";
     }
 
-    $('#type').text(typeStrings[type]);
+    $('#type').text(types[type].title);
+    $('#term').css("background", types[type].icon);
 };
 
 var doSearch = function(searchTerm) {

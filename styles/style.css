@@ -48,6 +48,7 @@
         #controls div {
             margin-top: 1em;
             width: auto;
+            line-height: 28px;
         }
 
 
@@ -67,6 +68,11 @@
 
         #controls #term {
             width: 400px;
+            border: 1px solid black;
+            height: 28px;
+            background: url(../images/search.png) no-repeat 5px 5px;
+            padding-left: 25px;
+
         }
 
 
