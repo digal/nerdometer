@@ -5,15 +5,40 @@
  * http://sam.zoy.org/wtfpl/COPYING for more details. */
 
 google.load('visualization', '1', {'packages':['corechart']});
-var type="search";
+var queryType="search";
+
+//TODO: Merge with next function
+var onUser = function() {
+    var searchTerm = $('#term')[0].value.trim();
+    if (!searchTerm) {  
+        return;
+    }
+    if (history && 'pushState' in history) {
+        window.location.hash = ['/user/', searchTerm].join('');
+    }
+};
+
+var onSearch = function() {
+    var searchTerm = $('#term')[0].value.trim();
+    if (!searchTerm) {
+        return;
+    }
+    if (history && 'pushState' in history) {
+        window.location.hash = ['/search/', searchTerm].join('');
+    }
+};
+
+
 var types = {
     "search" : {
         "title" : "twitter search query",
-        "icon" : "url(images/search.png) no-repeat 5px 5px"
+        "icon" : "url(images/search.png) no-repeat 5px 5px",
+        "handler" : onSearch
     },
     "user" : {
         "title" : "user's tweets",
-        "icon" : "url(images/@.png) no-repeat 5px 5px"
+        "icon" : "url(images/@.png) no-repeat 5px 5px",
+        "handler" : onUser
     }
 };
 
@@ -42,29 +67,15 @@ var cleanStr = function(html) {
     return unescapeHTML(html).replace(/<.*?>/, "").replace(/<.*?>/, "");
 };
 
-var onSearch = function() {
-    var searchTerm = $('#term')[0].value.trim();
-    if (!searchTerm) {
-        return;
-    }
-    if (history && 'pushState' in history) {
-        history.pushState(searchTerm, '', ['#!/search/', searchTerm].join(''));
-    }
-    doSearch(searchTerm);
-};
 
-var swapType = function() {
-    if (type == "search") {
-        type = "user";
-    } else {
-        type = "search";
-    }
+var doUser = function(username) {
+    $('#term').attr('value', username);
 
-    $('#type').text(types[type].title);
-    $('#term').css("background", types[type].icon);
+    //do nothin'
 };
 
 var doSearch = function(searchTerm) {
+    alert(searchTerm);
     $('#term').attr('value', searchTerm);
     $('#btnSearch').attr('disabled', 'disabled');
     $('#chartInner').hide();
@@ -112,24 +123,19 @@ var clear = function() {
     $('#chartInner').hide();
 };
 
-var binds = function() {
-    window.onpopstate = function(event) {
-        var searchTerm = event.state;
-        if (searchTerm) {
-            doSearch(searchTerm);
-        } else {
-            var hash = document.location.hash;
-            if (hash && hash.indexOf('#!/search/') == 0) {
-                searchTerm = decodeURIComponent(hash.substr(10));
-                doSearch(searchTerm);
-            } else {
-                clear();
-            }
-        }
-    };
-    document.getElementById('term').onkeyup = function(event) {
-        if (event.keyCode == 13) {
-            onSearch();
-        }
-    };
+
+var swapType = function() {
+    if (queryType == "search") {
+        setType("user")
+    } else {
+        setType("search")
+    }
+};
+
+var setType = function(type) {
+    queryType = type;
+    $('#type').text(types[queryType].title);
+    $('#term').css("background", types[queryType].icon);
+    $('#btnSearch').unbind('click');
+    $('#btnSearch').bind('click', types[queryType].handler);
 };
