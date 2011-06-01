@@ -1,13 +1,13 @@
 var router = SS.Router({
         '/search' : {
             '/([^/]+)' : {
-                on: doSearch
+                on: doQuery(types["search"])
             },
             on: function() { setType("search") }
         },
         '/user' : {
             '/([^/]+)' : {
-                on: doUser
+                on: doQuery(types["user"])
             },
             on: function() { setType("user") }
         }

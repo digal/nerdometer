@@ -13,22 +13,26 @@ var onYarr = function(type){
         if (!searchTerm) {
             return;
         }
-        if (history && 'pushState' in history) {
-            router.setRoute(['/'+type+'/', searchTerm].join(''));
-        }
+        router.setRoute(['/'+type+'/', searchTerm].join(''));
     };
 };
 
 var types = {
     "search" : {
-        "title" : "twitter search query",
+        "text" : "twitter search query",
         "icon" : "url(images/search.png) no-repeat 5px 5px",
-        "handler" : onYarr("search")
+        "handler" : onYarr("search"),
+        "title" : function (term) { return "Statistics for search query '"+term+"'" },
+        "url" : function (term) { return "http://search.twitter.com/search.json?q="+encodeURIComponent(term)+"&rpp=100&callback=?" },
+        "getData" : function (json) { return json.results; }
     },
     "user" : {
-        "title" : "user's tweets",
+        "text" : "user's tweets",
         "icon" : "url(images/@.png) no-repeat 5px 5px",
-        "handler" : onYarr("user")
+        "handler" : onYarr("user"),
+        "title" : function (user) { return "Statistics for @"+user },
+        "url" : function (user) { return "http://api.twitter.com/statuses/user_timeline.json?screen_name="+encodeURIComponent(user)+"&count=200&callback=?" },
+        "getData" : function (json) { return json; }
     }
 };
 
@@ -56,39 +60,36 @@ var cleanStr = function(html) {
 };
 
 
-var doUser = function(username) {
-    $('#term').attr('value', username);
+//Poor man's currying :S
+var doQuery = function(type) {
+    return function(searchTerm) {
+        $('#term').attr('value', searchTerm);
+        $('#btnSearch').attr('disabled', 'disabled');
+        $('#chartInner').hide();
+        $('#loader').show();
 
-    //do nothin'
-};
+        var searchURL = type.url(searchTerm);
+        $.getJSON(searchURL, function(json) {
+            $('#btnSearch')[0].removeAttribute('disabled');
 
-var doSearch = function(searchTerm) {
-    $('#term').attr('value', searchTerm);
-    $('#btnSearch').attr('disabled', 'disabled');
-    $('#chartInner').hide();
-    $('#loader').show();
+            var title = type.title(searchTerm);
 
-    var searchURL = "http://search.twitter.com/search.json?q="+encodeURIComponent(searchTerm)+"&rpp=100&callback=?";
-    $.getJSON(searchURL, function(json) {
-        $('#btnSearch')[0].removeAttribute('disabled');
+            var countMap = _(type.getData(json))
+                .chain()
+                .map(resMap)
+                .reduce(resReduce, {})
+                .value();
 
-        var title = "Client stats for \""+searchTerm+"\"";
+            var array = _(countMap)
+                .chain()
+                .keys()
+                .map(function(key) { return [cleanStr(key), countMap[key]]; })
+                .toArray()
+                .value();
 
-        var countMap = _(json.results)
-            .chain()
-            .map(resMap)
-            .reduce(resReduce, {})
-            .value();
-
-        var array = _(countMap)
-            .chain()
-            .keys()
-            .map(function(key) { return [cleanStr(key), countMap[key]]; })
-            .toArray()
-            .value();
-
-        draw(array, title);
-    });
+            draw(array, title);
+        });
+    }
 };
 
 var draw = function(array, title) {
@@ -121,7 +122,7 @@ var swapType = function() {
 
 var setType = function(type) {
     queryType = type;
-    $('#type').text(types[queryType].title);
+    $('#type').text(types[queryType].text);
     $('#term').css("background", types[queryType].icon);
     $('#btnSearch').unbind('click');
     $('#btnSearch').bind('click', types[queryType].handler);
