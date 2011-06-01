@@ -30,7 +30,7 @@ var types = {
         "text" : "user's tweets",
         "icon" : "url(images/@.png) no-repeat 5px 5px",
         "handler" : onYarr("user"),
-        "title" : function (user) { return "Statistics for @"+user },
+        "title" : function (user) { return "Statistics for @"+user+"'s tweets" },
         "url" : function (user) { return "http://api.twitter.com/statuses/user_timeline.json?screen_name="+encodeURIComponent(user)+"&count=200&callback=?" },
         "getData" : function (json) { return json; }
     }
