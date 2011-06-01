@@ -122,7 +122,7 @@ var swapType = function() {
 
 var setType = function(type) {
     queryType = type;
-    $('#type').text(types[queryType].text);
+    $('#type').html(types[queryType].text);
     $('#term').css("background", types[queryType].icon);
     $('#btnSearch').unbind('click');
     $('#btnSearch').bind('click', types[queryType].handler);
