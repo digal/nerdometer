@@ -84,6 +84,7 @@ var doQuery = function(type) {
                 .chain()
                 .keys()
                 .map(function(key) { return [cleanStr(key), countMap[key]]; })
+                .sortBy(function(pair){ return -pair[1]; })
                 .toArray()
                 .value();
 
