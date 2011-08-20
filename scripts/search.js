@@ -62,7 +62,8 @@ var cleanStr = function(html) {
 
 //Poor man's currying :S
 var doQuery = function(type) {
-    return function(searchTerm) {
+    return function(searchTermRaw) {
+        var searchTerm = decodeURIComponent(searchTerm);
         $('#term').attr('value', searchTerm);
         $('#btnSearch').attr('disabled', 'disabled');
         $('#chartInner').hide();
